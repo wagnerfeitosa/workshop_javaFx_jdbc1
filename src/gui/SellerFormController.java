@@ -1,8 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -17,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Seller;
@@ -38,7 +42,26 @@ public class SellerFormController implements Initializable{
 	private TextField txtName;
 	
 	@FXML
+	private TextField txtEmail;
+	
+	@FXML
+	private DatePicker dbBirthDate;
+	
+	@FXML
+	private TextField baseSalary;
+	
+	@FXML
 	private Label labelErroName;
+	
+	@FXML
+	private Label labelErroEmail;
+	
+	@FXML
+	private Label labelErroBirthDate;
+	
+	@FXML
+	private Label labelErroBaseSalary;
+	
 	
 	@FXML
 	private Button btSave;
@@ -77,6 +100,7 @@ public class SellerFormController implements Initializable{
 			
 		}catch(DbException e) {
 			Alerts.showAlerts("Error Saving object", null, e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		}
 		catch(ValidationException e) {
 			setErrorMessages(e.getErros());
@@ -125,7 +149,11 @@ public class SellerFormController implements Initializable{
 	//Metodo de restrições
 	public void initializaNode() {
 		Constraints.setTextFieldInteger(txtId);
-		Constraints.setTextFieldMaxLength(txtName, 20);
+		Constraints.setTextFieldMaxLength(txtName, 70);
+		Constraints.setTextFieldDouble(baseSalary);
+		Constraints.setTextFieldMaxLength(txtEmail, 50);
+		//formatado da data
+		Utils.formatDatePicker(dbBirthDate, "dd/MM/yyyy");
 		
 	}
 	//Metodo Responsavel por pegar uma entity e popular caixa de texto do formulario
@@ -136,6 +164,15 @@ public class SellerFormController implements Initializable{
 		//String.valueOf converte para string
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
+		txtEmail.setText(entity.getEmail());
+		Locale.setDefault(Locale.US);
+		baseSalary.setText(String.format("%.2f", entity.getBaseSalary()));
+		/*Mostrando a data local do fuso Horario do usuario*/
+		if(entity.getBirthDate() != null) {
+			dbBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));
+		}
+			
+		
 	}
 	//responsavel por pegar os erros da exception e escrever os erros na tela
 	private void setErrorMessages(Map<String,String> erros) {
