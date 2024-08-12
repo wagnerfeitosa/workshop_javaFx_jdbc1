@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.servicies.DepartmentService;
 import model.servicies.SellerService;
 /*Classe Observer que fica escutando a outra classe*/
 public class SellerListController implements Initializable,DataChangeListener{
@@ -134,7 +135,9 @@ public class SellerListController implements Initializable,DataChangeListener{
 			//pegando o controlador da tela criada
 			SellerFormController controller = loader.getController();
 			controller.setSeller(obj);
-			controller.setSellerService(new SellerService());
+			controller.setSellerService(new SellerService(),new DepartmentService());
+			//Metodo paara carregar a combobox com os dados
+			controller.loadAssociatedObjects();
 			//Se escrevendo para receber um evento
 			controller.subscribeDataChangeListener(this);
 			
@@ -157,6 +160,7 @@ public class SellerListController implements Initializable,DataChangeListener{
 			
 		}
 		catch(IOException e) {
+			e.printStackTrace();
 			Alerts.showAlerts("IO Exception", "Error loading View ", e.getMessage(), AlertType.ERROR);
 		}
 	}
