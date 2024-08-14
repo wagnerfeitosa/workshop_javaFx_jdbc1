@@ -1,9 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -150,7 +152,36 @@ public class SellerFormController implements Initializable {
 			// adicionando erro
 			exception.addErros("name", "o campo não pode ser vazio");
 		}
+
 		obj.setName(txtName.getText());
+
+		if (txtEmail.getText() == null || txtEmail.getText().trim().equals("")) {
+			// adicionando erro
+			exception.addErros("email", "o campo não pode ser vazio");
+		}
+
+		obj.setEmail(txtEmail.getText());
+
+		// pegando o valor do dbBirthDate do tipo DatePicker convertendo a data para
+		// Instant
+		if (dbBirthDate.getValue() == null) {
+			exception.addErros("birthDate", "o campo não pode ser vazio");
+		} else {
+			Instant instant = Instant.from(dbBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()));
+
+			// Obs:obj.setBirthDate espera receber um tipo Date.util
+			obj.setBirthDate(Date.from(instant));
+		}
+
+		if (baseSalary.getText() == null || baseSalary.getText().trim().equals("")) {
+			// adicionando erro
+			exception.addErros("baseSalary", "o campo não pode ser vazio");
+		}
+
+		obj.setBaseSalary(Utils.tryParseToDouble(baseSalary.getText()));
+		
+		obj.setDepartment(comboboxDepartment.getValue());
+
 		// se ouver um erro é lançado a exeption
 		if (exception.getErros().size() > 0) {
 			throw exception;
@@ -179,8 +210,8 @@ public class SellerFormController implements Initializable {
 		Constraints.setTextFieldMaxLength(txtEmail, 50);
 		// formatado da data
 		Utils.formatDatePicker(dbBirthDate, "dd/MM/yyyy");
-		
-		//metodo para inicializar a combobox
+
+		// metodo para inicializar a combobox
 		initializeComboBoxDepartment();
 
 	}
@@ -201,15 +232,14 @@ public class SellerFormController implements Initializable {
 		if (entity.getBirthDate() != null) {
 			dbBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()));
 		}
-		//getSlectionModel().selectFirst pega o primeiro elemento 
-		if(entity.getDepartment() == null) {
+		// getSlectionModel().selectFirst pega o primeiro elemento
+		if (entity.getDepartment() == null) {
 			comboboxDepartment.getSelectionModel().selectFirst();
-			
-		}else {
-			//caso ja tenha um department
+
+		} else {
+			// caso ja tenha um department
 			comboboxDepartment.setValue(entity.getDepartment());
 		}
-		
 
 	}
 
@@ -224,8 +254,7 @@ public class SellerFormController implements Initializable {
 		comboboxDepartment.setItems(obsList);
 
 	}
-	
-	
+
 //Resposavel por inicializar a combobox
 	private void initializeComboBoxDepartment() {
 		Callback<ListView<Department>, ListCell<Department>> factory = lv -> new ListCell<Department>() {
@@ -245,9 +274,15 @@ public class SellerFormController implements Initializable {
 
 		Set<String> fields = erros.keySet();
 
-		if (fields.contains("name")) {
-			labelErroName.setText(erros.get("name"));
-		}
+		
+		//Condição Ternário
+		labelErroName.setText(fields.contains("name") ? erros.get("name") : "");
+
+		labelErroEmail.setText(fields.contains("email") ? erros.get("email") : "");
+		
+		labelErroBaseSalary.setText(fields.contains("baseSalary") ? erros.get("baseSalary") : "");
+		
+		labelErroBirthDate.setText(fields.contains("birthDate") ? erros.get("birthDate") : "");
 	}
 
 }

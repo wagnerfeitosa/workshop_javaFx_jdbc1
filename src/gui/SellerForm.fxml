@@ -33,6 +33,11 @@
             <Label text="NAME" GridPane.rowIndex="1" />
             <TextField fx:id="txtId" editable="false" GridPane.columnIndex="1" />
             <TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dbBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="baseSalary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="comboboxDepartment" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="EMAIL" GridPane.rowIndex="2" />
             <Label fx:id="labelErroName" textFill="#dd1818" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
@@ -40,17 +45,12 @@
                   <Button fx:id="btCancel" mnemonicParsing="false" onAction="#onBtCancelAction" text="Cancel" />
                </children>
             </HBox>
-            <Label text="EMAIL" GridPane.rowIndex="2" />
             <Label text="BIRTHDATE" GridPane.rowIndex="3" />
             <Label text="BASE SALARY" GridPane.rowIndex="4" />
             <Label text="DEPARTMENT" GridPane.rowIndex="5" />
-            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="baseSalary" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label fx:id="labelErroEmail" textFill="#e40f0f" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Label fx:id="labelErroBirthDate" textFill="#e40c0c" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label fx:id="labelErroBaseSalary" textFill="#e10b0b" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <DatePicker fx:id="dbBirthDate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="comboboxDepartment" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>
